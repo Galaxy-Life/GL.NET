@@ -1,0 +1,1 @@
+Api wrapper for the Galaxy Life Api endpoints.
