@@ -1,6 +1,6 @@
 ﻿namespace GL.NET.Entities;
 
-public class AllianceUserDto
+public class AllianceUser
 {
     public string Id { get; set; }
 

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GL.NET", "GL.NET\GL.NET.csproj", "{D15F087E-6950-472D-9F2F-2971EB1B1C53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GL.NET", "GL.NET\GL.NET.csproj", "{D15F087E-6950-472D-9F2F-2971EB1B1C53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsoleApp", "TestConsoleApp\TestConsoleApp.csproj", "{10F09C86-5E06-427E-915C-A2C49D8FF4A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D15F087E-6950-472D-9F2F-2971EB1B1C53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D15F087E-6950-472D-9F2F-2971EB1B1C53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D15F087E-6950-472D-9F2F-2971EB1B1C53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10F09C86-5E06-427E-915C-A2C49D8FF4A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10F09C86-5E06-427E-915C-A2C49D8FF4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10F09C86-5E06-427E-915C-A2C49D8FF4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10F09C86-5E06-427E-915C-A2C49D8FF4A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
