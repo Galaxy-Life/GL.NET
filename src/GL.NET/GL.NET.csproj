@@ -1,13 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-
+<PropertyGroup>
+	<TargetFramework>net6.0</TargetFramework>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
+	<Version>0.1.0</Version>
+	<Authors>svr333</Authors>
+	<Company>Galaxy Life</Company>
+	<PackageId>GL.Net</PackageId>
+	<Description>A .NET api wrapper for the Galaxy Life api.</Description>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<PackageProjectUrl />
+	<RepositoryUrl>https://github.com/Galaxy-Life/GL.NET</RepositoryUrl>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageIcon>512x512.png</PackageIcon>
+	<PackageIconUrl />
+	<PackageTags>GL, Galaxy Life</PackageTags>
+</PropertyGroup>
+<ItemGroup>
+	<None Include="C:\Users\vanro\Pictures\GL\512x512.png">
+		<Pack>True</Pack>
+		<PackagePath />
+	</None>
+	<None Include="..\..\LICENSE">
+		<Pack>True</Pack>
+		<PackagePath />
+	</None>
+</ItemGroup>
+<ItemGroup>
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
 </Project>
