@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using GL.NET;
+﻿using GL.NET;
 
 var client = new GLAsyncClient();
 
