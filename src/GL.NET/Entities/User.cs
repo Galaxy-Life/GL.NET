@@ -12,15 +12,9 @@ public class User
 
     public long Level { get; set; }
 
-    public long Coins { get; set; }
-
-    public long Minerals { get; set; }
-
     public long Experience { get; set; }
 
-    public long Chips { get; set; }
-
-    public long Score { get; set; }
+    public string AllianceId { get; set; }
 
     public Planet[] Planets { get; set; }
 }

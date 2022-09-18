@@ -12,7 +12,11 @@ public class Alliance
 
     public int AllianceLevel { get; set; }
 
-    public int KnockoutPoints { get; set; }
+    public int WarPoints { get; set; }
+
+    public int WarsWon { get; set; }
+
+    public int WarsLost { get; set; }
 
     public AllianceUser[] Members { get; set; }
 }
