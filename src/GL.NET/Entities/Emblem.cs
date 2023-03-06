@@ -2,6 +2,11 @@
 
 public class Emblem
 {
+    public Emblem()
+    {
+
+    }
+
     public Emblem(string emblemInTextForm)
     {
         /* Convert GL's emblem in text form to the class */

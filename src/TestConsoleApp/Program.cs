@@ -10,4 +10,10 @@ var d = await client.SearchUserByName("svr");
 var e = await client.GetUserBySteamId("76561198240675026");
 var f = await client.GetUserStats("36271");
 
-var g = await client.GetAlliance("36271");
+var g = await client.GetAlliance("covenant imperium");
+
+var h = await client.GetXpLeaderboard();
+var i = await client.GetXpFromAttackLeaderboard();
+var j = await client.GetRivalsWonLeaderboard();
+
+Console.WriteLine("Done");

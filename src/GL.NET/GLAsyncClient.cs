@@ -15,7 +15,8 @@ public class GLAsyncClient
             var response = await _client.GetAsync($"{_baseUrl}/status");
             var content = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<List<ServerStatus>>(content);
+            return JsonConvert.DeserializeObject<List<ServerStatus>>(content)
+                ?? new List<ServerStatus>() { new ServerStatus("Api Server", false, 0) };;
         }
         catch (Exception)
         {
@@ -23,7 +24,7 @@ public class GLAsyncClient
         }
     }
 
-    public async Task<User> GetUserById(string id)
+    public async Task<User?> GetUserById(string id)
     {
         try
         {
@@ -38,7 +39,7 @@ public class GLAsyncClient
         }
     }
 
-    public async Task<User> GetUserByName(string name)
+    public async Task<User?> GetUserByName(string name)
     {
         try
         {
@@ -60,7 +61,7 @@ public class GLAsyncClient
             var response = await _client.GetAsync($"{_baseUrl}/users/search?name={name}");
             var content = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<List<User>>(content);
+            return JsonConvert.DeserializeObject<List<User>>(content) ?? new List<User>();
         }
         catch (Exception)
         {
@@ -68,7 +69,7 @@ public class GLAsyncClient
         }
     }
 
-    public async Task<User> GetUserBySteamId(string id)
+    public async Task<User?> GetUserBySteamId(string id)
     {
         try
         {
@@ -83,7 +84,22 @@ public class GLAsyncClient
         }
     }
 
-    public async Task<UserStats> GetUserStats(string id)
+    public async Task<string?> GetSteamIdByUserId(string id)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/users/platformId?userId={id}");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return content;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    public async Task<UserStats?> GetUserStats(string id)
     {
         try
         {
@@ -98,10 +114,11 @@ public class GLAsyncClient
         }
     }
 
-    public async Task<Alliance> GetAlliance(string name)
+    public async Task<Alliance?> GetAlliance(string name)
     {
         try
         {
+            name = name.ToLower().Trim();
             var response = await _client.GetAsync($"{_baseUrl}/alliances/get?name={name}");
             var content = await response.Content.ReadAsStringAsync();
 
@@ -110,6 +127,51 @@ public class GLAsyncClient
         catch (Exception)
         {
             return null;
+        }
+    }
+
+    public async Task<List<ExperienceLeaderboardUser>> GetXpLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Leaderboard/xp");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<ExperienceLeaderboardUser>>(content) ?? new List<ExperienceLeaderboardUser>();
+        }
+        catch (Exception)
+        {
+            return new List<ExperienceLeaderboardUser>();
+        }
+    }
+
+    public async Task<List<XpFromAttackLeaderboardUser>> GetXpFromAttackLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Leaderboard/xpFromAttack");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<XpFromAttackLeaderboardUser>>(content) ?? new List<XpFromAttackLeaderboardUser>();
+        }
+        catch (Exception)
+        {
+            return new List<XpFromAttackLeaderboardUser>();
+        }
+    }
+
+    public async Task<List<RivalsWonLeaderboardUser>> GetRivalsWonLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Leaderboard/rivalsWon");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<RivalsWonLeaderboardUser>>(content) ?? new List<RivalsWonLeaderboardUser>();
+        }
+        catch (Exception)
+        {
+            return new List<RivalsWonLeaderboardUser>();
         }
     }
 }

@@ -18,5 +18,9 @@ public class Alliance
 
     public int WarsLost { get; set; }
 
+    public bool InWar { get; set; }
+
+    public string OpponentAllianceId { get; set; }
+
     public AllianceUser[] Members { get; set; }
 }
