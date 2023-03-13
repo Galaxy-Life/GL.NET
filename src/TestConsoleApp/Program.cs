@@ -1,7 +1,9 @@
 ﻿using GL.NET;
 
-var client = new GLAsyncClient();
+var creds = Environment.GetEnvironmentVariable("PhoenixApiCreds").Split(';');
+var client = new GLClient(creds[0], creds[1]);
 
+// Galaxy Life Endpoints
 var a = await client.GetServerStatus();
 
 var b = await client.GetUserById("36271");
@@ -15,5 +17,12 @@ var g = await client.GetAlliance("covenant imperium");
 var h = await client.GetXpLeaderboard();
 var i = await client.GetXpFromAttackLeaderboard();
 var j = await client.GetRivalsWonLeaderboard();
+
+// Phoenix Endpoints
+var one = await client.GetPhoenixUserAsync(36271);
+var two = await client.GetPhoenixUserByNameAsync("svr333");
+
+// Auth Phoenix Endpoints
+var three = await client.GetFullPhoenixUserAsync(36271);
 
 Console.WriteLine("Done");

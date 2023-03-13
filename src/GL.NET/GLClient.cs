@@ -3,16 +3,18 @@ using Newtonsoft.Json;
 
 namespace GL.NET;
 
-public class GLAsyncClient
+public partial class GLClient
 {
     private HttpClient _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(3) };
-    private const string _baseUrl = "https://api.galaxylifegame.net";
+    private const string _baseGlUrl = "https://api.galaxylifegame.net";
+
+    public GLClient() { }
     
     public async Task<List<ServerStatus>> GetServerStatus()
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/status");
+            var response = await _client.GetAsync($"{_baseGlUrl}/status");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<List<ServerStatus>>(content)
@@ -28,7 +30,7 @@ public class GLAsyncClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/users/get?id={id}");
+            var response = await _client.GetAsync($"{_baseGlUrl}/users/get?id={id}");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<User>(content);
@@ -43,7 +45,7 @@ public class GLAsyncClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/users/name?name={name}");
+            var response = await _client.GetAsync($"{_baseGlUrl}/users/name?name={name}");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<User>(content);
@@ -58,7 +60,7 @@ public class GLAsyncClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/users/search?name={name}");
+            var response = await _client.GetAsync($"{_baseGlUrl}/users/search?name={name}");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<List<User>>(content) ?? new List<User>();
@@ -73,7 +75,7 @@ public class GLAsyncClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/users/steam?steamId={id}");
+            var response = await _client.GetAsync($"{_baseGlUrl}/users/steam?steamId={id}");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<User>(content);
@@ -88,7 +90,7 @@ public class GLAsyncClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/users/platformId?userId={id}");
+            var response = await _client.GetAsync($"{_baseGlUrl}/users/platformId?userId={id}");
             var content = await response.Content.ReadAsStringAsync();
 
             return content;
@@ -103,7 +105,7 @@ public class GLAsyncClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/users/stats?id={id}");
+            var response = await _client.GetAsync($"{_baseGlUrl}/users/stats?id={id}");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<UserStats>(content);
@@ -119,7 +121,7 @@ public class GLAsyncClient
         try
         {
             name = name.ToLower().Trim();
-            var response = await _client.GetAsync($"{_baseUrl}/alliances/get?name={name}");
+            var response = await _client.GetAsync($"{_baseGlUrl}/alliances/get?name={name}");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<Alliance>(content);
@@ -134,7 +136,7 @@ public class GLAsyncClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/Leaderboard/xp");
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/xp");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<List<ExperienceLeaderboardUser>>(content) ?? new List<ExperienceLeaderboardUser>();
@@ -149,7 +151,7 @@ public class GLAsyncClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/Leaderboard/xpFromAttack");
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/xpFromAttack");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<List<XpFromAttackLeaderboardUser>>(content) ?? new List<XpFromAttackLeaderboardUser>();
@@ -164,7 +166,7 @@ public class GLAsyncClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/Leaderboard/rivalsWon");
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/rivalsWon");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<List<RivalsWonLeaderboardUser>>(content) ?? new List<RivalsWonLeaderboardUser>();
