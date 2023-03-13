@@ -3,11 +3,11 @@
 	<TargetFramework>net7.0</TargetFramework>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
-	<Version>0.1.3</Version>
+	<Version>0.2.0</Version>
 	<Authors>svr333</Authors>
 	<Company>Galaxy Life</Company>
 	<PackageId>GL.Net</PackageId>
-	<Description>A .NET api wrapper for the Galaxy Life api.</Description>
+	<Description>A .NET Api Wrapper for Phoenix and Galaxy Life Endpoints</Description>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	<PackageProjectUrl />
 	<RepositoryUrl>https://github.com/Galaxy-Life/GL.NET</RepositoryUrl>
