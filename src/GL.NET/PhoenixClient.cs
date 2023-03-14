@@ -52,9 +52,9 @@ public partial class GLClient
     }
 
     public async Task<PhoenixUser?> GetPhoenixUserAsync(string userId)
-        => await GetPhoenixUserAsync(int.Parse(userId));
+        => await GetPhoenixUserAsync(uint.Parse(userId));
 
-    public async Task<PhoenixUser?> GetPhoenixUserAsync(int userId)
+    public async Task<PhoenixUser?> GetPhoenixUserAsync(uint userId)
     {
         try
         {
@@ -87,9 +87,9 @@ public partial class GLClient
     }
 
     public async Task<FullPhoenixUser?> GetFullPhoenixUserAsync(string userId)
-        => await GetFullPhoenixUserAsync(int.Parse(userId));
+        => await GetFullPhoenixUserAsync(uint.Parse(userId));
 
-    public async Task<FullPhoenixUser?> GetFullPhoenixUserAsync(int userId)
+    public async Task<FullPhoenixUser?> GetFullPhoenixUserAsync(uint userId)
     {
         await CheckAuth();
 
