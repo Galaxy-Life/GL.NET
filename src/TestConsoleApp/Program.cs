@@ -24,5 +24,7 @@ var two = await client.GetPhoenixUserByNameAsync("svr333");
 
 // Auth Phoenix Endpoints
 var three = await client.GetFullPhoenixUserAsync(36271);
+var four = await client.RemoveGlBeta(36271);
+var five = await client.AddGlBeta(36271);
 
 Console.WriteLine("Done");
