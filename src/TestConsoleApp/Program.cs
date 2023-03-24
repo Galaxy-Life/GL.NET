@@ -1,6 +1,6 @@
 ﻿using GL.NET;
 
-var creds = Environment.GetEnvironmentVariable("PhoenixApiCreds").Split(';');
+var creds = Environment.GetEnvironmentVariable("PhoenixApiCred").Split(';');
 var client = new GLClient(creds[0], creds[1]);
 
 // Galaxy Life Endpoints

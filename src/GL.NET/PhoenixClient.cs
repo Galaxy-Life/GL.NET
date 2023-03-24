@@ -15,7 +15,6 @@ public partial class GLClient
     private string _accessToken = "";
     private Timer _tokenTimer = new Timer(6 * 60 * 60 * 1000);
 
-
     public GLClient(string clientId, string clientSecret)
     {
         _clientId = clientId;
@@ -25,10 +24,13 @@ public partial class GLClient
         _tokenTimer.Elapsed += OnTimerElapsed;
     }
 
+    public event ErrorEventHandler? ErrorThrown;
+
     public async Task RefreshToken()
     {
         if (string.IsNullOrEmpty(_clientId) || string.IsNullOrEmpty(_clientSecret))
         {
+            _accessToken = "";
             return;
         }
 
@@ -41,13 +43,14 @@ public partial class GLClient
             var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(await result.Content.ReadAsStringAsync());
 
             _accessToken = tokenResponse?.AccessToken ?? "";
+
+            _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(3) };
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
         }
         catch (Exception e)
         {
             _accessToken = "";
-            Console.WriteLine("Fatal Error! Could not get Refresh Token.");
-            Console.WriteLine(e);
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
         }
     }
 
@@ -65,7 +68,7 @@ public partial class GLClient
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
             return null;
         }
     }
@@ -81,7 +84,7 @@ public partial class GLClient
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
             return null;
         }
     }
@@ -102,7 +105,7 @@ public partial class GLClient
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
             return null;
         }
     }
@@ -120,7 +123,7 @@ public partial class GLClient
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
             return false;
         }
     }
@@ -138,7 +141,7 @@ public partial class GLClient
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
             return false;
         }
     }
@@ -159,7 +162,7 @@ public partial class GLClient
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
             return false;
         }
     }
@@ -180,7 +183,7 @@ public partial class GLClient
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
             return false;
         }
     }
