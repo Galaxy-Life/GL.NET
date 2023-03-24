@@ -10,6 +10,7 @@ namespace GL.NET;
 public partial class GLClient
 {
     private const string _basePnUrl = "https://api.phoenixnetwork.net";
+    private const string _glBetaEntitle = "galaxylife-beta";
     private string _clientId = "";
     private string _clientSecret = "";
     private string _accessToken = "";
@@ -180,6 +181,40 @@ public partial class GLClient
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<bool>(content);
+        }
+        catch (Exception e)
+        {
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
+            return false;
+        }
+    }
+
+    public async Task<bool> AddGlBeta(uint userId)
+    {
+        await CheckAuth();
+
+        try
+        {
+            var response = await _client.PostAsync($"{_basePnUrl}/User/addEntitle?userId={userId}&entitlement={_glBetaEntitle}", new StringContent(""));
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
+            return false;
+        }
+    }
+
+    public async Task<bool> RemoveGlBeta(uint userId)
+    {
+        await CheckAuth();
+
+        try
+        {
+            var response = await _client.PostAsync($"{_basePnUrl}/User/removeEntitle?userId={userId}&entitlement={_glBetaEntitle}", new StringContent(""));
+
+            return response.IsSuccessStatusCode;
         }
         catch (Exception e)
         {
