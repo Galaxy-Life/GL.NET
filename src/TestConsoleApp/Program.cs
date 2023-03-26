@@ -3,6 +3,14 @@
 var creds = Environment.GetEnvironmentVariable("PhoenixApiCred").Split(';');
 var client = new GLClient(creds[0], creds[1]);
 
+client.ErrorThrown += OnErrorThrown;
+
+void OnErrorThrown(object sender, ErrorEventArgs e)
+{
+    var ex = e.GetException();
+    System.Console.WriteLine(ex.Message);
+}
+
 // Galaxy Life Endpoints
 var a = await client.GetServerStatus();
 

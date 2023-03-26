@@ -117,7 +117,7 @@ public partial class GLClient
 
         try
         {
-            var response = await _client.GetAsync($"{_basePnUrl}/User/changeEmail?userId={userId}&email={email}");
+            var response = await _client.PostAsync($"{_basePnUrl}/User/changeEmail?userId={userId}&email={email}", new StringContent(""));
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<bool>(content);
@@ -135,7 +135,7 @@ public partial class GLClient
 
         try
         {
-            var response = await _client.GetAsync($"{_basePnUrl}/User/changeName?userId={userId}&email={email}");
+            var response = await _client.PostAsync($"{_basePnUrl}/User/changeName?userId={userId}&email={email}", new StringContent(""));
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<bool>(content);
