@@ -6,7 +6,7 @@ namespace GL.NET;
 public partial class GLClient
 {
     protected HttpClient _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(3) };
-    private const string _baseGlUrl = "https://api.galaxylifegame.net";
+    protected const string _baseGlUrl = "https://api.galaxylifegame.net";
 
     public GLClient() { }
 

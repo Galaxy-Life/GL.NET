@@ -35,4 +35,9 @@ var three = await client.GetFullPhoenixUserAsync(36271);
 var four = await client.RemoveGlBeta(36271);
 var five = await client.AddGlBeta(36271);
 
+// Backend endpoints
+var six = await client.GetChipsBoughtAsync("36271");
+var seven = await client.TryAddChipsToUserAsync("36271", 1);
+var eight = await client.TryAddItemToUserAsync("36271", "7000", 1);
+
 Console.WriteLine("Done");
