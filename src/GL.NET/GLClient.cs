@@ -5,10 +5,17 @@ namespace GL.NET;
 
 public partial class GLClient
 {
-    private HttpClient _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(3) };
+    protected HttpClient _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(3) };
     private const string _baseGlUrl = "https://api.galaxylifegame.net";
 
     public GLClient() { }
+
+    public event ErrorEventHandler? ErrorThrown;
+
+    public virtual void ThrowError(Exception e)
+    {
+        ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
+    }
     
     public async Task<List<ServerStatus>> GetServerStatus()
     {
@@ -20,8 +27,9 @@ public partial class GLClient
             return JsonConvert.DeserializeObject<List<ServerStatus>>(content)
                 ?? new List<ServerStatus>() { new ServerStatus("Api Server", false, 0) };;
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            ThrowError(e);
             return new List<ServerStatus>() { new ServerStatus("Api Server", false, 0) };
         }
     }
@@ -35,8 +43,9 @@ public partial class GLClient
 
             return JsonConvert.DeserializeObject<User>(content);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            ThrowError(e);
             return null;
         }
     }
@@ -50,8 +59,9 @@ public partial class GLClient
 
             return JsonConvert.DeserializeObject<User>(content);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            ThrowError(e);
             return null;
         }
     }
@@ -65,8 +75,9 @@ public partial class GLClient
 
             return JsonConvert.DeserializeObject<List<User>>(content) ?? new List<User>();
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            ThrowError(e);
             return new List<User>();
         }
     }
@@ -80,8 +91,9 @@ public partial class GLClient
 
             return JsonConvert.DeserializeObject<User>(content);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            ThrowError(e);
             return null;
         }
     }
@@ -95,8 +107,9 @@ public partial class GLClient
 
             return content;
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            ThrowError(e);
             return null;
         }
     }
@@ -110,8 +123,9 @@ public partial class GLClient
 
             return JsonConvert.DeserializeObject<UserStats>(content);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            ThrowError(e);
             return null;
         }
     }
@@ -126,8 +140,9 @@ public partial class GLClient
 
             return JsonConvert.DeserializeObject<Alliance>(content);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            ThrowError(e);
             return null;
         }
     }
@@ -141,8 +156,9 @@ public partial class GLClient
 
             return JsonConvert.DeserializeObject<List<ExperienceLeaderboardUser>>(content) ?? new List<ExperienceLeaderboardUser>();
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            ThrowError(e);
             return new List<ExperienceLeaderboardUser>();
         }
     }
@@ -156,8 +172,9 @@ public partial class GLClient
 
             return JsonConvert.DeserializeObject<List<XpFromAttackLeaderboardUser>>(content) ?? new List<XpFromAttackLeaderboardUser>();
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            ThrowError(e);
             return new List<XpFromAttackLeaderboardUser>();
         }
     }
@@ -171,8 +188,9 @@ public partial class GLClient
 
             return JsonConvert.DeserializeObject<List<RivalsWonLeaderboardUser>>(content) ?? new List<RivalsWonLeaderboardUser>();
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            ThrowError(e);
             return new List<RivalsWonLeaderboardUser>();
         }
     }

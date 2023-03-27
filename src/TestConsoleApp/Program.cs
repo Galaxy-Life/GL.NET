@@ -1,7 +1,7 @@
 ﻿using GL.NET;
 
 var creds = Environment.GetEnvironmentVariable("PhoenixApiCred").Split(';');
-var client = new GLClient(creds[0], creds[1]);
+var client = new AuthorizedGLClient(creds[0], creds[1], creds[2]);
 
 client.ErrorThrown += OnErrorThrown;
 
