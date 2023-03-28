@@ -1,4 +1,5 @@
 ﻿using GL.NET;
+using GL.NET.Entities;
 
 var creds = Environment.GetEnvironmentVariable("PhoenixApiCred").Split(';');
 var client = new AuthorizedGLClient(creds[0], creds[1], creds[2]);
@@ -34,10 +35,11 @@ var two = await client.GetPhoenixUserByNameAsync("svr333");
 var three = await client.GetFullPhoenixUserAsync(36271);
 var four = await client.RemoveGlBeta(36271);
 var five = await client.AddGlBeta(36271);
+var six = await client.GiveRoleAsync(36271, PhoenixRole.Staff);
 
 // Backend endpoints
-var six = await client.GetChipsBoughtAsync("36271");
-var seven = await client.TryAddChipsToUserAsync("36271", 1);
-var eight = await client.TryAddItemToUserAsync("36271", "7000", 1);
+var seven = await client.GetChipsBoughtAsync("36271");
+var eight = await client.TryAddChipsToUserAsync("36271", 1);
+var nine = await client.TryAddItemToUserAsync("36271", "7000", 1);
 
 Console.WriteLine("Done");

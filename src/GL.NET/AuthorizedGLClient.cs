@@ -267,6 +267,28 @@ public partial class AuthorizedGLClient : GLClient
         }
     }
 
+    public async Task<bool> GiveRoleAsync(uint userId, PhoenixRole role)
+    {
+        await CheckAuth();
+
+        try
+        {
+            var response = await _client.PostAsync($"{_basePnUrl}/User/giveRole?userId={userId}&role={role}", new StringContent(""));
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (NoAuthException)
+        {
+            await RefreshToken();
+            return false;
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return false;
+        }
+    }
+
     private async Task CheckAuth()
     {
         if (string.IsNullOrEmpty(_accessToken))
