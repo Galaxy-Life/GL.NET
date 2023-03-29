@@ -132,9 +132,7 @@ public partial class AuthorizedGLClient : GLClient
         try
         {
             var response = await _client.PostAsync($"{_basePnUrl}/User/changeEmail?userId={userId}&email={email}", new StringContent(""));
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<bool>(content);
+            return response.IsSuccessStatusCode;
         }
         catch (NoAuthException)
         {
@@ -155,9 +153,7 @@ public partial class AuthorizedGLClient : GLClient
         try
         {
             var response = await _client.PostAsync($"{_basePnUrl}/User/changeName?userId={userId}&email={email}", new StringContent(""));
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<bool>(content);
+            return response.IsSuccessStatusCode;
         }
         catch (NoAuthException)
         {
@@ -181,9 +177,7 @@ public partial class AuthorizedGLClient : GLClient
         try
         {
             var response = await _client.PostAsync($"{_basePnUrl}/User/banUser?userId={userId}&reason={reason}", new StringContent(""));
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<bool>(content);
+            return response.IsSuccessStatusCode;
         }
         catch (NoAuthException)
         {
@@ -207,9 +201,7 @@ public partial class AuthorizedGLClient : GLClient
         try
         {
             var response = await _client.PostAsync($"{_basePnUrl}/User/unbanUser?userId={userId}", new StringContent(""));
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<bool>(content);
+            return response.IsSuccessStatusCode;
         }
         catch (NoAuthException)
         {
@@ -252,7 +244,6 @@ public partial class AuthorizedGLClient : GLClient
         try
         {
             var response = await _client.PostAsync($"{_basePnUrl}/User/removeEntitle?userId={userId}&entitlement={_glBetaEntitle}", new StringContent(""));
-
             return response.IsSuccessStatusCode;
         }
         catch (NoAuthException)
@@ -274,7 +265,6 @@ public partial class AuthorizedGLClient : GLClient
         try
         {
             var response = await _client.PostAsync($"{_basePnUrl}/User/giveRole?userId={userId}&role={role}", new StringContent(""));
-
             return response.IsSuccessStatusCode;
         }
         catch (NoAuthException)
