@@ -227,7 +227,7 @@ public partial class GLClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseGlUrl}/Alliances/removeUserFromAlliance?allianceId={allianceId}");
+            var response = await _client.GetAsync($"{_baseGlUrl}/Alliances/removeUserFromAlliance?name={allianceId}");
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<List<WarSummary>>(content) ?? new List<WarSummary>();
