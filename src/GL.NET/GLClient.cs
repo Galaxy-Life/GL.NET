@@ -222,4 +222,20 @@ public partial class GLClient
             return false;
         }
     }
+
+    public async Task<List<WarSummary>> GetAllianceWarlogs(string allianceId)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Alliances/removeUserFromAlliance?allianceId={allianceId}");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<WarSummary>>(content) ?? new List<WarSummary>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<WarSummary>();
+        }
+    }
 }
