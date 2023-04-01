@@ -27,6 +27,8 @@ var h = await client.GetXpLeaderboard();
 var i = await client.GetXpFromAttackLeaderboard();
 var j = await client.GetRivalsWonLeaderboard();
 
+var k = await client.GetAllianceWarlogs("unity");
+
 // Phoenix Endpoints
 var one = await client.GetPhoenixUserAsync(36271);
 var two = await client.GetPhoenixUserByNameAsync("svr333");
