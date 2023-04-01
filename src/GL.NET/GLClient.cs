@@ -194,4 +194,32 @@ public partial class GLClient
             return new List<RivalsWonLeaderboardUser>();
         }
     }
+
+    public async Task<bool> MakeUserOwnerInAllianceAsync(string allianceId, string userId)
+    {
+        try
+        {
+            var response = await _client.PostAsync($"{_baseGlUrl}/Alliances/makeUserOwnerInAlliance?allianceId={allianceId}&userId={userId}", new StringContent(""));
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return false;
+        }
+    }
+
+    public async Task<bool> KickUserFromAllianceAsync(string allianceId, string userId)
+    {
+        try
+        {
+            var response = await _client.PostAsync($"{_baseGlUrl}/Alliances/removeUserFromAlliance?allianceId={allianceId}&userId={userId}", new StringContent(""));
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return false;
+        }
+    }
 }

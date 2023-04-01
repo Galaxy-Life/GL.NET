@@ -4,7 +4,7 @@ namespace GL.NET;
 
 public partial class AuthorizedGLClient
 {
-    private const string _baseBackendUrl = "https://lb.galaxylifeserver.net/api/tasks";
+    private const string _baseBackendUrl = "https://lb.galaxylifeserver.net/api";
 
     public async Task<int> GetChipsBoughtAsync(string userId)
     {
@@ -26,7 +26,7 @@ public partial class AuthorizedGLClient
     {
         try
         {
-            var response = await _client.PostAsync($"{_baseBackendUrl}/addChipsFallback?id={userId}&amount={amount}", new StringContent(""));
+            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/addChipsFallback?id={userId}&amount={amount}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)
@@ -40,7 +40,7 @@ public partial class AuthorizedGLClient
     {
         try
         {
-            var response = await _client.PostAsync($"{_baseBackendUrl}/addItemFallback?id={userId}&itemSku={itemSku}&amount={amount}", new StringContent(""));
+            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/addItemFallback?id={userId}&itemSku={itemSku}&amount={amount}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)
@@ -60,7 +60,7 @@ public partial class AuthorizedGLClient
 
         try
         {
-            var response = await _client.PostAsync($"{_baseBackendUrl}/kick?id={userId}", new StringContent(""));
+            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/kick?id={userId}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)
@@ -74,7 +74,21 @@ public partial class AuthorizedGLClient
     {
         try
         {
-            var response = await _client.PostAsync($"{_baseBackendUrl}/reset?id={userId}", new StringContent(""));
+            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/reset?id={userId}", new StringContent(""));
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return false;
+        }
+    }
+
+    public async Task<bool> RenameAllianceAsync(string allianceId, string newName)
+    {
+        try
+        {
+            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/renameAlliance?allianceId={allianceId}&newName={newName}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)
