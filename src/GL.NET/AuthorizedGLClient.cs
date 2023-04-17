@@ -48,7 +48,7 @@ public partial class AuthorizedGLClient : GLClient
 
             _accessToken = tokenResponse?.AccessToken ?? "";
 
-            _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(3) };
+            _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(30) };
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
             _client.DefaultRequestHeaders.Add("gl-auth", _backendToken);
         }
@@ -276,6 +276,150 @@ public partial class AuthorizedGLClient : GLClient
         {
             ThrowError(e);
             return false;
+        }
+    }
+
+    public async Task<List<ChipsLeaderboardUser>> GetChipsLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/chips");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<ChipsLeaderboardUser>>(content) ?? new List<ChipsLeaderboardUser>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<ChipsLeaderboardUser>();
+        }
+    }
+
+    public async Task<List<ChipsSpentLeaderboardUser>> GetChipsSpentLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/chipsSpent");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<ChipsSpentLeaderboardUser>>(content) ?? new List<ChipsSpentLeaderboardUser>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<ChipsSpentLeaderboardUser>();
+        }
+    }
+
+    public async Task<List<FriendsHelpedLeaderboardUser>> GetFriendsHelpedLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/friendsHelped");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<FriendsHelpedLeaderboardUser>>(content) ?? new List<FriendsHelpedLeaderboardUser>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<FriendsHelpedLeaderboardUser>();
+        }
+    }
+
+    public async Task<List<GiftsReceivedLeaderboardUser>> GetGiftsReceivedLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/giftsReceived");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<GiftsReceivedLeaderboardUser>>(content) ?? new List<GiftsReceivedLeaderboardUser>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<GiftsReceivedLeaderboardUser>();
+        }
+    }
+
+    public async Task<List<GiftsSentLeaderboardUser>> GetGiftsSentLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/giftsSent");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<GiftsSentLeaderboardUser>>(content) ?? new List<GiftsSentLeaderboardUser>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<GiftsSentLeaderboardUser>();
+        }
+    }
+
+    public async Task<List<StarsVisitedLeaderboardUser>> GetStarsVisitedLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/starsVisited");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<StarsVisitedLeaderboardUser>>(content) ?? new List<StarsVisitedLeaderboardUser>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<StarsVisitedLeaderboardUser>();
+        }
+    }
+
+    public async Task<List<ObstaclesRecycledLeaderboardUser>> GetObstaclesRecycledLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/obstaclesRecycled");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<ObstaclesRecycledLeaderboardUser>>(content) ?? new List<ObstaclesRecycledLeaderboardUser>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<ObstaclesRecycledLeaderboardUser>();
+        }
+    }
+
+    public async Task<List<UtilityUsedLeaderboardUser>> GetUtilityUsedLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/utilityUsed");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<UtilityUsedLeaderboardUser>>(content) ?? new List<UtilityUsedLeaderboardUser>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<UtilityUsedLeaderboardUser>();
+        }
+    }
+
+    public async Task<List<SocialItemLeaderboardUser>> GetItemLeaderboard(string sku)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/item?sku={sku}");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<SocialItemLeaderboardUser>>(content) ?? new List<SocialItemLeaderboardUser>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<SocialItemLeaderboardUser>();
         }
     }
 

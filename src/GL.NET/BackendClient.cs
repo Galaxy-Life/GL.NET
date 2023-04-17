@@ -97,4 +97,48 @@ public partial class AuthorizedGLClient
             return false;
         }
     }
+
+    public async Task<bool> EnableMaintenance(uint minutes)
+    {
+        try
+        {
+            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/enableMaintenance?minutes={minutes}", new StringContent(""));
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return false;
+        }
+    }
+
+    public async Task<bool> ReloadRules()
+    {
+        try
+        {
+            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/reloadRules", new StringContent(""));
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return false;
+        }
+    }
+
+    public async Task<long> GetMaintenanceTime()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseBackendUrl}/Tasks/getMaintenanceTimer");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return long.Parse(content);
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return 0;
+        }
+    }
 }
