@@ -423,6 +423,22 @@ public partial class AuthorizedGLClient : GLClient
         }
     }
 
+    public async Task<List<AdvancedChipsLeaderboardUser>> GetAdvancedChipsLb()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/advChips");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<AdvancedChipsLeaderboardUser>>(content) ?? new List<AdvancedChipsLeaderboardUser>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<AdvancedChipsLeaderboardUser>();
+        }
+    }
+
     private async Task CheckAuth()
     {
         if (string.IsNullOrEmpty(_accessToken))

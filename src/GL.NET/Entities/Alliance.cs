@@ -24,3 +24,11 @@ public class Alliance
 
     public AllianceUser[] Members { get; set; }
 }
+
+public class MinimalAlliance
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public int Warpoints { get; set; }
+    public int MemberCount { get; set; }
+}

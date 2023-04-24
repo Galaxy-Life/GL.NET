@@ -195,6 +195,38 @@ public partial class GLClient
         }
     }
 
+    public async Task<List<WarpointLeaderboardUser>> GetWarpointLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/warpoints");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<WarpointLeaderboardUser>>(content) ?? new List<WarpointLeaderboardUser>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<WarpointLeaderboardUser>();
+        }
+    }
+
+    public async Task<List<MinimalAlliance>> GetAllianceWarpointLeaderboard()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/Alliances/warpointLb");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<MinimalAlliance>>(content) ?? new List<MinimalAlliance>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new List<MinimalAlliance>();
+        }
+    }
+
     public async Task<bool> MakeUserOwnerInAllianceAsync(string allianceId, string userId)
     {
         try

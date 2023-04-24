@@ -68,3 +68,16 @@ public class SocialItemLeaderboardUser : LeaderboardUser
 {
     public int Quantity { get; set; }
 }
+
+public class AdvancedChipsLeaderboardUser : LeaderboardUser
+{
+    public long Chips { get; set; }
+    public long ChipsSpent { get; set; }
+    public long ChipsPurchased { get; set; }
+}
+
+public class WarpointLeaderboardUser : LeaderboardUser
+{
+    public long Warpoints { get; set; }
+    public string AllianceName { get; set; }
+}
