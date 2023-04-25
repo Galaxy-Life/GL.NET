@@ -2,7 +2,7 @@ namespace GL.NET;
 
 public partial class AuthorizedGLClient
 {
-    private const string _stagingUrl = "https://master.staging.galaxylifeserver.net/api";
+    private const string _stagingUrl = "https://master.staging.galaxylifegame.net/api";
 
     public async Task<bool> ReloadStagingRules()
     {
