@@ -1,273 +1,83 @@
-﻿using GL.NET.Entities;
+using System.Net.Http.Headers;
+using System.Timers;
+using GL.NET.Entities;
+using GL.NET.Exceptions;
 using Newtonsoft.Json;
+using Timer = System.Timers.Timer;
 
 namespace GL.NET;
 
-public partial class GLClient
+public class GLClient
 {
-    protected HttpClient _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(30) };
+    protected HttpClient _client;
+    public event ErrorEventHandler? ErrorThrown;
     protected const string _baseGlUrl = "https://api.galaxylifegame.net";
 
-    public GLClient() { }
+    // Authorization
+    private string _clientId = "";
+    private string _clientSecret = "";
+    private string _backendToken = "";
+    private string _accessToken = "";
+    private Timer _tokenTimer = new Timer(6 * 60 * 60 * 1000);
 
-    public event ErrorEventHandler? ErrorThrown;
-
-    public virtual void ThrowError(Exception e)
+    public GLClient(string clientId, string clientSecret, string backendToken, int timeout = 30)
     {
-        ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
+        _clientId = clientId;
+        _clientSecret = clientSecret;
+        _backendToken = backendToken;
+
+        _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(timeout) };
+        RefreshToken().GetAwaiter().GetResult();
+
+        Api = new ApiClient(_client);
+        Phoenix = new AuthorizedGLClient(_client);
+        Production = new BackendClient(_client, "https://lb.galaxylifeserver.net/api");
+        Staging = new BackendClient(_client, "https://master.staging.galaxylifegame.net/api");
+
+        _tokenTimer.Start();
+        _tokenTimer.Elapsed += OnTimerElapsed;
     }
-    
-    public async Task<List<ServerStatus>> GetServerStatus()
+
+    public async Task RefreshToken()
     {
+        if (string.IsNullOrEmpty(_clientId) || string.IsNullOrEmpty(_clientSecret))
+        {
+            _accessToken = "";
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(new GLException($"Client Id and/or Client Secret cannot be empty/null!")));
+            return;
+        }
+
         try
         {
-            var response = await _client.GetAsync($"{_baseGlUrl}/status");
-            var content = await response.Content.ReadAsStringAsync();
+            var result = await _client.PostAsync("https://phoenixnetwork.eu.auth0.com/oauth/token",
+                new StringContent($"{{\"client_id\":\"{_clientId}\",\"client_secret\":\"{_clientSecret}\",\"audience\":\"https://api.phoenixnetwork.net\",\"grant_type\":\"client_credentials\"}}",
+                new MediaTypeHeaderValue("application/json")));
+        
+            var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(await result.Content.ReadAsStringAsync());
 
-            return JsonConvert.DeserializeObject<List<ServerStatus>>(content)
-                ?? new List<ServerStatus>() { new ServerStatus("Api Server", false, 0) };;
+            _accessToken = tokenResponse?.AccessToken ?? "";
+
+            _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(30) };
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+            _client.DefaultRequestHeaders.Add("gl-auth", _backendToken);
         }
         catch (Exception e)
         {
-            ThrowError(e);
-            return new List<ServerStatus>() { new ServerStatus("Api Server", false, 0) };
+            _accessToken = "";
+            ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
         }
     }
 
-    public async Task<User?> GetUserById(string id)
+    public ApiClient Api { get; set; }
+
+    public AuthorizedGLClient Phoenix { get; set; }
+
+    public BackendClient Production { get; set; }
+
+    public BackendClient Staging { get; set; }
+
+    private async void OnTimerElapsed(object? sender, ElapsedEventArgs e)
     {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/users/get?id={id}");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<User>(content);
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return null;
-        }
-    }
-
-    public async Task<User?> GetUserByName(string name)
-    {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/users/name?name={name}");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<User>(content);
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return null;
-        }
-    }
-
-    public async Task<List<User>> SearchUserByName(string name)
-    {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/users/search?name={name}");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<List<User>>(content) ?? new List<User>();
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return new List<User>();
-        }
-    }
-
-    public async Task<User?> GetUserBySteamId(string id)
-    {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/users/steam?steamId={id}");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<User>(content);
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return null;
-        }
-    }
-
-    public async Task<string?> GetSteamIdByUserId(string id)
-    {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/users/platformId?userId={id}");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return content;
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return null;
-        }
-    }
-
-    public async Task<UserStats?> GetUserStats(string id)
-    {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/users/stats?id={id}");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<UserStats>(content);
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return null;
-        }
-    }
-
-    public async Task<Alliance?> GetAlliance(string name)
-    {
-        try
-        {
-            name = name.ToLower().Trim();
-            var response = await _client.GetAsync($"{_baseGlUrl}/alliances/get?name={name}");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<Alliance>(content);
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return null;
-        }
-    }
-
-    public async Task<List<ExperienceLeaderboardUser>> GetXpLeaderboard()
-    {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/xp");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<List<ExperienceLeaderboardUser>>(content) ?? new List<ExperienceLeaderboardUser>();
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return new List<ExperienceLeaderboardUser>();
-        }
-    }
-
-    public async Task<List<XpFromAttackLeaderboardUser>> GetXpFromAttackLeaderboard()
-    {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/xpFromAttack");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<List<XpFromAttackLeaderboardUser>>(content) ?? new List<XpFromAttackLeaderboardUser>();
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return new List<XpFromAttackLeaderboardUser>();
-        }
-    }
-
-    public async Task<List<RivalsWonLeaderboardUser>> GetRivalsWonLeaderboard()
-    {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/rivalsWon");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<List<RivalsWonLeaderboardUser>>(content) ?? new List<RivalsWonLeaderboardUser>();
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return new List<RivalsWonLeaderboardUser>();
-        }
-    }
-
-    public async Task<List<WarpointLeaderboardUser>> GetWarpointLeaderboard()
-    {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/Leaderboard/warpoints");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<List<WarpointLeaderboardUser>>(content) ?? new List<WarpointLeaderboardUser>();
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return new List<WarpointLeaderboardUser>();
-        }
-    }
-
-    public async Task<List<MinimalAlliance>> GetAllianceWarpointLeaderboard()
-    {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/Alliances/warpointLb");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<List<MinimalAlliance>>(content) ?? new List<MinimalAlliance>();
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return new List<MinimalAlliance>();
-        }
-    }
-
-    public async Task<bool> MakeUserOwnerInAllianceAsync(string allianceId, string userId)
-    {
-        try
-        {
-            var response = await _client.PostAsync($"{_baseGlUrl}/Alliances/makeUserOwnerInAlliance?allianceId={allianceId}&userId={userId}", new StringContent(""));
-            return response.IsSuccessStatusCode;
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return false;
-        }
-    }
-
-    public async Task<bool> KickUserFromAllianceAsync(string allianceId, string userId)
-    {
-        try
-        {
-            var response = await _client.PostAsync($"{_baseGlUrl}/Alliances/removeUserFromAlliance?allianceId={allianceId}&userId={userId}", new StringContent(""));
-            return response.IsSuccessStatusCode;
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return false;
-        }
-    }
-
-    public async Task<List<WarSummary>> GetAllianceWarlogs(string allianceId)
-    {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/Alliances/getWarlogs?name={allianceId}");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<List<WarSummary>>(content) ?? new List<WarSummary>();
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return new List<WarSummary>();
-        }
+        await RefreshToken();
     }
 }

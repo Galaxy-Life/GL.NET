@@ -1,37 +1,25 @@
-using Newtonsoft.Json;
-
 namespace GL.NET;
 
-public partial class AuthorizedGLClient
+public class BackendClient
 {
-    private const string _baseBackendUrl = "https://lb.galaxylifeserver.net/api";
+    private HttpClient _client;
+    private string _baseUrl = "https://lb.galaxylifeserver.net/api";
 
-    public async Task<int> GetChipsBoughtAsync(string userId)
+    public BackendClient(HttpClient client, string baseUrl)
     {
-        try
-        {
-            var response = await _client.GetAsync($"{_baseGlUrl}/users/getChipsBought?id={userId}");
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<int>(content);
-        }
-        catch (Exception e)
-        {
-            ThrowError(e);
-            return 0;
-        }
+        _client = client;
+        _baseUrl = baseUrl;
     }
 
     public async Task<bool> TryAddChipsToUserAsync(string userId, int amount)
     {
         try
         {
-            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/addChipsFallback?id={userId}&amount={amount}", new StringContent(""));
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/addChipsFallback?id={userId}&amount={amount}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)
         {
-            ThrowError(e);
             return false;
         }
     }
@@ -40,12 +28,11 @@ public partial class AuthorizedGLClient
     {
         try
         {
-            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/addItemFallback?id={userId}&itemSku={itemSku}&amount={amount}", new StringContent(""));
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/addItemFallback?id={userId}&itemSku={itemSku}&amount={amount}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)
         {
-            ThrowError(e);
             return false;
         }
     }
@@ -60,12 +47,11 @@ public partial class AuthorizedGLClient
 
         try
         {
-            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/kick?id={userId}", new StringContent(""));
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/kick?id={userId}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)
         {
-            ThrowError(e);
             return false;
         }
     }
@@ -74,12 +60,11 @@ public partial class AuthorizedGLClient
     {
         try
         {
-            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/reset?id={userId}", new StringContent(""));
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/reset?id={userId}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)
         {
-            ThrowError(e);
             return false;
         }
     }
@@ -88,12 +73,11 @@ public partial class AuthorizedGLClient
     {
         try
         {
-            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/renameAlliance?allianceId={allianceId}&newName={newName}", new StringContent(""));
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/renameAlliance?allianceId={allianceId}&newName={newName}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)
         {
-            ThrowError(e);
             return false;
         }
     }
@@ -102,12 +86,11 @@ public partial class AuthorizedGLClient
     {
         try
         {
-            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/enableMaintenance?minutes={minutes}", new StringContent(""));
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/enableMaintenance?minutes={minutes}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)
         {
-            ThrowError(e);
             return false;
         }
     }
@@ -116,12 +99,11 @@ public partial class AuthorizedGLClient
     {
         try
         {
-            var response = await _client.PostAsync($"{_baseBackendUrl}/Tasks/reloadRules", new StringContent(""));
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/reloadRules", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception e)
         {
-            ThrowError(e);
             return false;
         }
     }
@@ -130,14 +112,13 @@ public partial class AuthorizedGLClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseBackendUrl}/Tasks/getMaintenanceTimer");
+            var response = await _client.GetAsync($"{_baseUrl}/Tasks/getMaintenanceTimer");
             var content = await response.Content.ReadAsStringAsync();
 
             return long.Parse(content);
         }
         catch (Exception e)
         {
-            ThrowError(e);
             return 0;
         }
     }
