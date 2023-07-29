@@ -444,6 +444,54 @@ public class ApiClient
         }
     }
 
+    public async Task<UserBattleLog> GetBattlelogTelemetry(string userId)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/telemetry/battlelogs?id={userId}");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<UserBattleLog>(content) ?? new UserBattleLog();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new UserBattleLog();
+        }
+    }
+
+    public async Task<UserGifts> GetGiftsTelemetry(string userId)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/telemetry/gifts?id={userId}");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<UserGifts>(content) ?? new UserGifts();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new UserGifts();
+        }
+    }
+
+    public async Task<UserLogins> GetLoginsTelemetry(string userId)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/telemetry/logins?id={userId}");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<UserLogins>(content) ?? new UserLogins();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new UserLogins();
+        }
+    }
+
     private void ThrowError(Exception e)
     {
         ErrorThrown?.Invoke(this, new ErrorEventArgs(e));
