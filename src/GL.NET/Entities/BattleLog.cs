@@ -1,12 +1,5 @@
 namespace GL.NET.Entities;
 
-public class UserBattleLog
-{
-    public string Id { get; set; }
-
-    public List<BattleLog> BattleLogs { get; set; } = new List<BattleLog>();
-}
-
 public class BattleLog
 {
     public bool IsDefense { get; set; }

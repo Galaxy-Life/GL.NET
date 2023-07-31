@@ -37,6 +37,20 @@ public class BackendClient
         }
     }
 
+    public async Task<bool> TryAddXpToUserAsync(string userId, string itemSku, int amount)
+    {
+        try
+        {
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/addXpFallback?id={userId}&amount={amount}", new StringContent(""));
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
     public async Task<bool> TryKickUserOfflineAsync(string userId)
     {
         // if you send request with empty userid, backend will run this for everyone
@@ -120,6 +134,62 @@ public class BackendClient
         catch (Exception e)
         {
             return 0;
+        }
+    }
+
+    public async Task<bool> RunKicker(string id = "")
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Tasks/kick?id={id}");
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> ResetPlanetHelps(string id)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Tasks/resetPlanetHelps?id={id}");
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> ForceWar(string a, string b)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Tasks/forceWar?a={a}&b={b}");
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> ForceStopWar(string a, string b)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Tasks/forceStopWar?a={a}&b={b}");
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            return false;
         }
     }
 }

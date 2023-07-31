@@ -30,6 +30,10 @@ var j = await client.Api.GetRivalsWonLeaderboard();
 var k = await client.Api.GetAllianceWarlogs("unity");
 var l = await client.Api.GetChipsBoughtAsync("36271");
 
+var m = await client.Api.GetBattlelogTelemetry("2");
+var n = await client.Api.GetGiftsTelemetry("2");
+var o = await client.Api.GetLoginsTelemetry("2");
+
 // Phoenix Endpoints
 var one = await client.Phoenix.GetPhoenixUserAsync(36271);
 var two = await client.Phoenix.GetPhoenixUserByNameAsync("svr333");

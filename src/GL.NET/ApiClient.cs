@@ -444,51 +444,51 @@ public class ApiClient
         }
     }
 
-    public async Task<UserBattleLog> GetBattlelogTelemetry(string userId)
+    public async Task<List<BattleLog>> GetBattlelogTelemetry(string userId)
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseGlUrl}/telemetry/battlelogs?id={userId}");
+            var response = await _client.GetAsync($"{_baseGlUrl}/telemetry/battlelogs?userId={userId}");
             var content = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<UserBattleLog>(content) ?? new UserBattleLog();
+            return JsonConvert.DeserializeObject<List<BattleLog>>(content) ?? new List<BattleLog>();
         }
         catch (Exception e)
         {
             ThrowError(e);
-            return new UserBattleLog();
+            return new List<BattleLog>();
         }
     }
 
-    public async Task<UserGifts> GetGiftsTelemetry(string userId)
+    public async Task<List<Gift>> GetGiftsTelemetry(string userId)
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseGlUrl}/telemetry/gifts?id={userId}");
+            var response = await _client.GetAsync($"{_baseGlUrl}/telemetry/gifts?userId={userId}");
             var content = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<UserGifts>(content) ?? new UserGifts();
+            return JsonConvert.DeserializeObject<List<Gift>>(content) ?? new List<Gift>();
         }
         catch (Exception e)
         {
             ThrowError(e);
-            return new UserGifts();
+            return new List<Gift>();
         }
     }
 
-    public async Task<UserLogins> GetLoginsTelemetry(string userId)
+    public async Task<List<Login>> GetLoginsTelemetry(string userId)
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseGlUrl}/telemetry/logins?id={userId}");
+            var response = await _client.GetAsync($"{_baseGlUrl}/telemetry/logins?userId={userId}");
             var content = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<UserLogins>(content) ?? new UserLogins();
+            return JsonConvert.DeserializeObject<List<Login>>(content) ?? new List<Login>();
         }
         catch (Exception e)
         {
             ThrowError(e);
-            return new UserLogins();
+            return new List<Login>();
         }
     }
 
