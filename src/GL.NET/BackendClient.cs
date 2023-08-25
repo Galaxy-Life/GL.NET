@@ -37,7 +37,7 @@ public class BackendClient
         }
     }
 
-    public async Task<bool> TryAddXpToUserAsync(string userId, string itemSku, int amount)
+    public async Task<bool> TryAddXpToUserAsync(string userId, int amount)
     {
         try
         {
