@@ -29,11 +29,6 @@ public class GLClient
         _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(timeout) };
         RefreshToken().GetAwaiter().GetResult();
 
-        Api = new ApiClient(_client);
-        Phoenix = new AuthorizedGLClient(_client);
-        Production = new BackendClient(_client, "https://lb.galaxylifeserver.net/api");
-        Staging = new BackendClient(_client, "https://master.staging.galaxylifegame.net/api");
-
         _tokenTimer.Start();
         _tokenTimer.Elapsed += OnTimerElapsed;
     }
@@ -60,6 +55,11 @@ public class GLClient
             _client = new HttpClient() { Timeout = TimeSpan.FromSeconds(30) };
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
             _client.DefaultRequestHeaders.Add("gl-auth", _backendToken);
+
+            Api = new ApiClient(_client);
+            Phoenix = new AuthorizedGLClient(_client);
+            Production = new BackendClient(_client, "https://lb.galaxylifeserver.net/api");
+            Staging = new BackendClient(_client, "https://master.staging.galaxylifegame.net/api");
         }
         catch (Exception e)
         {
