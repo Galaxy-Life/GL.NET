@@ -45,8 +45,8 @@ public class GLClient
         try
         {
             var result = await _client.PostAsync("https://accounts.phoenixnetwork.net/oauth/token",
-                new StringContent($"{{\"client_id\":\"{_clientId}\",\"client_secret\":\"{_clientSecret}\",\"audience\":\"https://api.phoenixnetwork.net\",\"grant_type\":\"client_credentials\"}}",
-                new MediaTypeHeaderValue("application/json")));
+                new StringContent($"{{\"client_id\":\"{_clientId}\",\"client_secret\":\"{_clientSecret}\",\"grant_type\":\"client_credentials\"}}",
+                new MediaTypeHeaderValue("application/x-www-form-urlencoded")));
         
             var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(await result.Content.ReadAsStringAsync());
 
