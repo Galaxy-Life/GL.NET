@@ -8,6 +8,7 @@ public partial class AuthorizedGLClient
     private HttpClient _client;
     private const string _basePnUrl = "https://api.phoenixnetwork.net";
     private const string _glBetaEntitle = "galaxylife-beta";
+    private const string _glEmulateEntitle = "galaxylife-emulate";
 
     public AuthorizedGLClient(HttpClient client)
     {
@@ -142,6 +143,33 @@ public partial class AuthorizedGLClient
         try
         {
             var response = await _client.PostAsync($"{_basePnUrl}/User/removeEntitle?userId={userId}&entitlement={_glBetaEntitle}", new StringContent(""));
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> AddEmulate(uint userId)
+    {
+        try
+        {
+            var response = await _client.PostAsync($"{_basePnUrl}/User/addEntitle?userId={userId}&entitlement={_glEmulateEntitle}", new StringContent(""));
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> RemoveEmulate(uint userId)
+    {
+        try
+        {
+            var response = await _client.PostAsync($"{_basePnUrl}/User/removeEntitle?userId={userId}&entitlement={_glEmulateEntitle}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception)
