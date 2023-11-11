@@ -7,6 +7,7 @@ public class ApiClient
 {
     protected HttpClient _client;
     protected const string _baseGlUrl = "https://api.galaxylifegame.net";
+    protected const string _baseTelemetryUrl = "https://api.telemetry.galaxylifegame.net/api";
 
     public ApiClient(HttpClient client)
     {
@@ -489,6 +490,23 @@ public class ApiClient
         {
             ThrowError(e);
             return new List<Login>();
+        }
+    }
+
+    public async Task<Dictionary<string, Dictionary<string, int>>> GetFingerprint(string userId)
+    {
+        try
+        {
+            var token = _client.DefaultRequestHeaders.GetValues("gl-auth").FirstOrDefault();
+            var response = await _client.GetAsync($"{_baseTelemetryUrl}/fingerprint?userId={userId}&key={token}");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(content) ?? new Dictionary<string, Dictionary<string, int>>();
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return new Dictionary<string, Dictionary<string, int>>();
         }
     }
 
