@@ -445,6 +445,22 @@ public class ApiClient
         }
     }
 
+    public async Task<int> GetChipsSpentAsync(string userId)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseGlUrl}/users/getChipsSpent?id={userId}");
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<int>(content);
+        }
+        catch (Exception e)
+        {
+            ThrowError(e);
+            return 0;
+        }
+    }
+
     public async Task<List<BattleLog>> GetBattlelogTelemetry(string userId)
     {
         try

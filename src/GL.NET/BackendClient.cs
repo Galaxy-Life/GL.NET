@@ -192,4 +192,32 @@ public class BackendClient
             return false;
         }
     }
+
+    public async Task<bool> CompensateChips(uint amount)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Tasks/compensateChips?amount={amount}");
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> CompensateItems(string sku, uint amount)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Tasks/compensateItems?sku={sku}&amount={amount}");
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 }
