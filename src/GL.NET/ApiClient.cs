@@ -509,20 +509,20 @@ public class ApiClient
         }
     }
 
-    public async Task<Dictionary<string, Dictionary<string, int>>> GetFingerprint(string userId)
+    public async Task<Dictionary<string, Dictionary<string, Fingerprint>>> GetFingerprint(string userId)
     {
         try
         {
             var token = _client.DefaultRequestHeaders.GetValues("gl-auth").FirstOrDefault();
-            var response = await _client.GetAsync($"{_baseTelemetryUrl}/fingerprint?userId={userId}&key={token}");
+            var response = await _client.GetAsync($"{_baseTelemetryUrl}/fingerprint/visits?userId={userId}&key={token}");
             var content = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(content) ?? new Dictionary<string, Dictionary<string, int>>();
+            return JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Fingerprint>>>(content) ?? new Dictionary<string, Dictionary<string, Fingerprint>>();
         }
         catch (Exception e)
         {
             ThrowError(e);
-            return new Dictionary<string, Dictionary<string, int>>();
+            return new Dictionary<string, Dictionary<string, Fingerprint>>();
         }
     }
 
