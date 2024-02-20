@@ -141,7 +141,7 @@ public class BackendClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/Tasks/kick?id={id}");
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/kick?id={id}", new StringContent(""));
 
             return response.IsSuccessStatusCode;
         }
@@ -155,7 +155,7 @@ public class BackendClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/Tasks/resetPlanetHelps?id={id}");
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/resetPlanetHelps?id={id}", new StringContent(""));
 
             return response.IsSuccessStatusCode;
         }
@@ -169,7 +169,7 @@ public class BackendClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/Tasks/forceWar?a={a}&b={b}");
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/forceWar?a={a}&b={b}", new StringContent(""));
 
             return response.IsSuccessStatusCode;
         }
@@ -183,7 +183,7 @@ public class BackendClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/Tasks/forceStopWar?a={a}&b={b}");
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/forceStopWar?a={a}&b={b}", new StringContent(""));
 
             return response.IsSuccessStatusCode;
         }
@@ -197,7 +197,7 @@ public class BackendClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/Tasks/compensateChips?amount={amount}");
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/compensateChips?amount={amount}", new StringContent(""));
 
             return response.IsSuccessStatusCode;
         }
@@ -211,7 +211,7 @@ public class BackendClient
     {
         try
         {
-            var response = await _client.GetAsync($"{_baseUrl}/Tasks/compensateItems?sku={sku}&amount={amount}");
+            var response = await _client.PostAsync($"{_baseUrl}/Tasks/compensateItems?sku={sku}&amount={amount}", new StringContent(""));
 
             return response.IsSuccessStatusCode;
         }
