@@ -220,4 +220,18 @@ public class BackendClient
             return false;
         }
     }
+
+    public async Task<bool> RestartServer()
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Tasks/restartStaging");
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 }
