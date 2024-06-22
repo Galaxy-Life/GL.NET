@@ -79,11 +79,11 @@ public partial class AuthorizedGLClient
         }
     }
 
-    public async Task<bool> TryUpdateUsername(uint userId, string email)
+    public async Task<bool> TryUpdateUsername(uint userId, string name)
     {
         try
         {
-            var response = await _client.PostAsync($"{_basePnUrl}/User/changeName?userId={userId}&email={email}", new StringContent(""));
+            var response = await _client.PostAsync($"{_basePnUrl}/User/changeName?userId={userId}&name={name}", new StringContent(""));
             return response.IsSuccessStatusCode;
         }
         catch (Exception)
