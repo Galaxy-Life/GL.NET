@@ -46,6 +46,7 @@ var five = await client.Phoenix.AddGlBeta(36271);
 var six = await client.Phoenix.GiveRoleAsync(36271, PhoenixRole.Staff);
 //var seven = await client.Phoenix.TryBanUser(12421, "Api test ban");
 //var seven2 = await client.Phoenix.TryUnbanUser(315100);
+// var seven3 = await client.Phoenix.DeleteAvatarAsync(47990);
 
 // Backend endpoints
 var eight = await client.Production.TryAddChipsToUserAsync("36271", 1);
