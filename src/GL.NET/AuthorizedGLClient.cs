@@ -190,4 +190,17 @@ public partial class AuthorizedGLClient
             return false;
         }
     }
+
+    public async Task<bool> DeleteAvatarAsync(uint userId)
+    {
+        try
+        {
+            var response = await _client.DeleteAsync($"{_basePnUrl}/user/avatar/{userId}");
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 }
